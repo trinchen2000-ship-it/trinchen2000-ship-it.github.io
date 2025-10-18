@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Coco Colours">
+    <title>Coco Colours Tattoo Jena</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --black: #000000;
+            --turquoise: #7dd3c0;  /* Pastelltürkis */
+            --turquoise-light: #a5f3e7;
+            --turquoise-dark: #5eead4;
+            --gray-dark: #1f1f1f;
+            --gray-medium: #4a4a4a;
+            --gray-light: #9a9a9a;
+            --gray-lighter: #e0e0e0;
+            --white: #ffffff;
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-top: var(--safe-top);
+        }
+        
+        /* App Container */
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--black);
+            position: relative;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--black);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--gray-dark);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--turquoise);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .notification-bell {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .notification-bell:active {
+            transform: scale(0.9);
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--turquoise);
+            border-radius: 50%;
+            display: none;
+        }
+        
+        .notification-dot.active {
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--black);
+            border-top: 1px solid var(--gray-dark);
+            z-index: 99;
+            padding-bottom: var(--safe-bottom);
+        }
+        
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-light);
+        }
+        
+        .nav-item.active {
+            color: var(--turquoise);
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Content */
+        .content {
+            padding-bottom: 80px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Home Screen */
+        .hero {
+            position: relative;
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--turquoise-dark) 0%, var(--turquoise) 100%);
+            color: var(--black);
+        }
+        
+        .hero-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .hero-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        /* Spontaneous Slots */
+        .slots-section {
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--turquoise);
+        }
+        
+        .slot-card {
+            background: var(--gray-dark);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .slot-card:active {
+            transform: scale(0.98);
+        }
+        
+        .slot-card.available {
+            border-color: var(--turquoise);
+        }
+        
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .slot-time {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--turquoise);
+        }
+        
+        .slot-badge {
+            background: var(--turquoise);
+            color: var(--black);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .slot-badge.urgent {
+            background: var(--white);
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .slot-artist {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .artist-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--turquoise);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .artist-info {
+            flex: 1;
+        }
+        
+        .artist-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+        }
+        
+        .artist-style {
+            font-size: 12px;
+            color: var(--gray-light);
+        }
+        
+        .slot-details {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-medium);
+        }
+        
+        .slot-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--gray-light);
+        }
+        
+        .book-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--turquoise);
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .book-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-light);
+        }
+        
+        .empty-text {
+            color: var(--gray-medium);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .enable-push-btn {
+            background: var(--turquoise);
+            color: var(--black);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        
+        /* Artists Screen */
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .artist-card {
+            background: var(--gray-dark);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .artist-card:active {
+            transform: scale(0.95);
+        }
+        
+        .artist-image {
+            height: 150px;
+            background: var(--turquoise);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        
+        .artist-content {
+            padding: 15px;
+        }
+        
+        .artist-card-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .artist-card-style {
+            font-size: 12px;
+            color: var(--turquoise);
+        }
+        
+        .artist-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--gray-medium);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--turquoise);
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+        }
+        
+        /* Gallery */
+        .gallery-filters {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .gallery-filters::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .filter-chip {
+            padding: 8px 16px;
+            background: var(--gray-dark);
+            border: 1px solid var(--gray-medium);
+            border-radius: 20px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-chip.active {
+            background: var(--turquoise);
+            color: var(--black);
+            border-color: var(--turquoise);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            padding: 0 20px 20px;
+        }
+        
+        .gallery-item {
+            aspect-ratio: 1;
+            background: var(--gray-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gallery-item::before {
+            content: '🎨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            opacity: 0.3;
+        }
+        
+        /* Profile */
+        .profile-header {
+            background: linear-gradient(135deg, var(--turquoise-dark) 0%, var(--turquoise) 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--black);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 5px;
+        }
+        
+        .profile-member {
+            font-size: 14px;
+            color: var(--black);
+            opacity: 0.8;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: var(--gray-dark);
+            margin: -20px 20px 20px;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .profile-stat {
+            text-align: center;
+        }
+        
+        .profile-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--turquoise);
+            margin-bottom: 5px;
+        }
+        
+        .profile-stat-label {
+            font-size: 11px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+        }
+        
+        .menu-section {
+            padding: 20px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px;
+            background: var(--gray-dark);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:active {
+            background: var(--gray-medium);
+        }
+        
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--turquoise);
+            color: var(--black);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .menu-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .menu-arrow {
+            color: var(--gray-light);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--gray-dark);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            animation: slideUp 0.3s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--turquoise);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray-light);
+            font-size: 28px;
+            cursor: pointer;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--turquoise);
+            color: var(--black);
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        
+        .loading.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--gray-dark);
+            border-top-color: var(--turquoise);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Countdown Timer */
+        .countdown {
+            display: inline-block;
+            background: var(--black);
+            color: var(--turquoise);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: monospace;
+        }
+        
+        /* Special Offers */
+        .offer-banner {
+            background: linear-gradient(135deg, var(--turquoise) 0%, var(--turquoise-light) 100%);
+            color: var(--black);
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .offer-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .offer-text {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🎨</div>
+                    <div class="logo-text">Coco Colours</div>
+                </div>
+                <div class="notification-bell" onclick="toggleNotifications()">
+                    🔔
+                    <div class="notification-dot" id="notificationDot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Home Screen -->
+            <div class="screen active" id="homeScreen">
+                <div class="hero">
+                    <h1 class="hero-title">Spontane Termine</h1>
+                    <p class="hero-subtitle">Schnapp dir einen freien Slot!</p>
+                </div>
+                
+                <div class="slots-section">
+                    <h2 class="section-title">⚡ Jetzt verfügbar</h2>
+                    
+                    <div id="spontaneousSlots">
+                        <!-- Slots werden dynamisch geladen -->
+                    </div>
+                    
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon">⏰</div>
+                        <div class="empty-title">Keine spontanen Termine</div>
+                        <div class="empty-text">
+                            Aktiviere Push-Benachrichtigungen,<br>
+                            um sofort informiert zu werden!
+                        </div>
+                        <button class="enable-push-btn" onclick="enablePushNotifications()">
+                            🔔 Benachrichtigungen aktivieren
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="offer-banner">
+                    <div class="offer-title">🎉 Flash Day Samstag!</div>
+                    <div class="offer-text">Walk-in Tattoos ab 50€</div>
+                </div>
+            </div>
+            
+            <!-- Artists Screen -->
+            <div class="screen" id="artistsScreen">
+                <div class="section-title" style="padding: 20px 20px 0;">Unsere Artists</div>
+                
+                <div class="artists-grid">
+                    <div class="artist-card" onclick="showArtist('Nina')">
+                        <div class="artist-image">👩‍🎨</div>
+                        <div class="artist-content">
+                            <div class="artist-card-name">Nina</div>
+                            <div class="artist-card-style">Watercolor • Floral</div>
+                            <div class="artist-stats">
+                                <div class="stat">
+                                    <div class="stat-value">247</div>
+                                    <div class="stat-label">Tattoos</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">4.9</div>
+                                    <div class="stat-label">Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="artist-card" onclick="showArtist('Max')">
+                        <div class="artist-image">🧑‍🎨</div>
+                        <div class="artist-content">
+                            <div class="artist-card-name">Max</div>
+                            <div class="artist-card-style">Geometric • Minimal</div>
+                            <div class="artist-stats">
+                                <div class="stat">
+                                    <div class="stat-value">189</div>
+                                    <div class="stat-label">Tattoos</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">5.0</div>
+                                    <div class="stat-label">Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="artist-card" onclick="showArtist('Sophie')">
+                        <div class="artist-image">💫</div>
+                        <div class="artist-content">
+                            <div class="artist-card-name">Sophie</div>
+                            <div class="artist-card-style">Fineline • Ornamental</div>
+                            <div class="artist-stats">
+                                <div class="stat">
+                                    <div class="stat-value">312</div>
+                                    <div class="stat-label">Tattoos</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">4.8</div>
+                                    <div class="stat-label">Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="artist-card" onclick="showArtist('Tom')">
+                        <div class="artist-image">🎯</div>
+                        <div class="artist-content">
+                            <div class="artist-card-name">Tom</div>
+                            <div class="artist-card-style">Traditional • Color</div>
+                            <div class="artist-stats">
+                                <div class="stat">
+                                    <div class="stat-value">428</div>
+                                    <div class="stat-label">Tattoos</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">4.9</div>
+                                    <div class="stat-label">Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gallery Screen -->
+            <div class="screen" id="galleryScreen">
+                <div class="gallery-filters">
+                    <div class="filter-chip active">Alle</div>
+                    <div class="filter-chip">Watercolor</div>
+                    <div class="filter-chip">Geometric</div>
+                    <div class="filter-chip">Fineline</div>
+                    <div class="filter-chip">Traditional</div>
+                    <div class="filter-chip">Floral</div>
+                </div>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                    <div class="gallery-item"></div>
+                </div>
+            </div>
+            
+            <!-- Profile Screen -->
+            <div class="screen" id="profileScreen">
+                <div class="profile-header">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-name">Mein Profil</div>
+                    <div class="profile-member">Mitglied seit 2024</div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="profile-stat-value">3</div>
+                        <div class="profile-stat-label">Tattoos</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value">450</div>
+                        <div class="profile-stat-label">Punkte</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value">Gold</div>
+                        <div class="profile-stat-label">Status</div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-item" onclick="showMyBookings()">
+                        <div class="menu-left">
+                            <div class="menu-icon">📅</div>
+                            <div class="menu-text">Meine Termine</div>
+                        </div>
+                        <div class="menu-arrow">→</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showNotificationSettings()">
+                        <div class="menu-left">
+                            <div class="menu-icon">🔔</div>
+                            <div class="menu-text">Benachrichtigungen</div>
+                        </div>
+                        <div class="menu-arrow">→</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showAftercare()">
+                        <div class="menu-left">
+                            <div class="menu-icon">💊</div>
+                            <div class="menu-text">Pflegehinweise</div>
+                        </div>
+                        <div class="menu-arrow">→</div>
+                    </div>
+                    
+                    <div class="menu-item" onclick="showContact()">
+                        <div class="menu-left">
+                            <div class="menu-icon">📍</div>
+                            <div class="menu-text">Kontakt & Anfahrt</div>
+                        </div>
+                        <div class="menu-arrow">→</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <nav class="nav">
+            <div class="nav-items">
+                <div class="nav-item active" onclick="switchScreen('homeScreen')">
+                    <div class="nav-icon">⚡</div>
+                    <div class="nav-label">Spontan</div>
+                </div>
+                <div class="nav-item" onclick="switchScreen('artistsScreen')">
+                    <div class="nav-icon">👥</div>
+                    <div class="nav-label">Artists</div>
+                </div>
+                <div class="nav-item" onclick="switchScreen('galleryScreen')">
+                    <div class="nav-icon">🖼️</div>
+                    <div class="nav-label">Galerie</div>
+                </div>
+                <div class="nav-item" onclick="switchScreen('profileScreen')">
+                    <div class="nav-icon">👤</div>
+                    <div class="nav-label">Profil</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Title</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">Content</div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+    
+    <script>
+        // App State
+        let currentScreen = 'homeScreen';
+        let spontaneousSlots = [];
+        let myBookings = [];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSpontaneousSlots();
+            checkNotificationPermission();
+            startSlotRefresh();
+        });
+        
+        // Load Spontaneous Slots from LocalStorage (simulated backend)
+        function loadSpontaneousSlots() {
+            // Simuliere Backend-Daten
+            const savedSlots = localStorage.getItem('spontaneousSlots');
+            
+            if (savedSlots) {
+                spontaneousSlots = JSON.parse(savedSlots);
+            } else {
+                // Demo-Daten
+                spontaneousSlots = [
+                    {
+                        id: 1,
+                        time: '15:30',
+                        date: 'Heute',
+                        artist: 'Nina',
+                        avatar: '👩‍🎨',
+                        style: 'Watercolor • Floral',
+                        duration: '2 Stunden',
+                        size: 'Klein-Mittel',
+                        price: '150€',
+                        urgent: true,
+                        countdown: 900 // 15 Minuten
+                    },
+                    {
+                        id: 2,
+                        time: '18:00',
+                        date: 'Heute',
+                        artist: 'Max',
+                        avatar: '🧑‍🎨',
+                        style: 'Geometric • Minimal',
+                        duration: '3 Stunden',
+                        size: 'Mittel',
+                        price: '250€',
+                        urgent: false,
+                        countdown: 3600
+                    }
+                ];
+            }
+            
+            displaySlots();
+        }
+        
+        // Display Slots
+        function displaySlots() {
+            const container = document.getElementById('spontaneousSlots');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (spontaneousSlots.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            container.innerHTML = spontaneousSlots.map(slot => `
+                <div class="slot-card ${slot.urgent ? 'available' : ''}">
+                    <div class="slot-header">
+                        <div class="slot-time">${slot.date} • ${slot.time}</div>
+                        ${slot.urgent ? 
+                            `<div class="slot-badge urgent">LAST MINUTE</div>` : 
+                            `<div class="slot-badge">Verfügbar</div>`
+                        }
+                    </div>
+                    
+                    <div class="slot-artist">
+                        <div class="artist-avatar">${slot.avatar}</div>
+                        <div class="artist-info">
+                            <div class="artist-name">${slot.artist}</div>
+                            <div class="artist-style">${slot.style}</div>
+                        </div>
+                        ${slot.urgent ? 
+                            `<div class="countdown" data-time="${slot.countdown}">${formatCountdown(slot.countdown)}</div>` : 
+                            ''
+                        }
+                    </div>
+                    
+                    <div class="slot-details">
+                        <div class="slot-detail">
+                            ⏱️ ${slot.duration}
+                        </div>
+                        <div class="slot-detail">
+                            📏 ${slot.size}
+                        </div>
+                        <div class="slot-detail">
+                            💰 ${slot.price}
+                        </div>
+                    </div>
+                    
+                    <button class="book-btn" onclick="bookSlot(${slot.id})">
+                        Jetzt buchen
+                    </button>
+                </div>
+            `).join('');
+            
+            // Start countdown timers
+            startCountdowns();
+        }
+        
+        // Format Countdown
+        function formatCountdown(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Start Countdowns
+        function startCountdowns() {
+            const countdowns = document.querySelectorAll('.countdown');
+            
+            countdowns.forEach(countdown => {
+                let time = parseInt(countdown.dataset.time);
+                
+                const interval = setInterval(() => {
+                    time--;
+                    if (time <= 0) {
+                        clearInterval(interval);
+                        countdown.textContent = 'Abgelaufen';
+                        countdown.style.background = 'var(--gray-dark)';
+                    } else {
+                        countdown.textContent = formatCountdown(time);
+                    }
+                }, 1000);
+            });
+        }
+        
+        // Book Slot
+        function bookSlot(slotId) {
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                
+                const slot = spontaneousSlots.find(s => s.id === slotId);
+                
+                // Add to bookings
+                myBookings.push({
+                    ...slot,
+                    bookedAt: new Date().toISOString()
+                });
+                localStorage.setItem('myBookings', JSON.stringify(myBookings));
+                
+                // Remove from available slots
+                spontaneousSlots = spontaneousSlots.filter(s => s.id !== slotId);
+                localStorage.setItem('spontaneousSlots', JSON.stringify(spontaneousSlots));
+                
+                displaySlots();
+                showToast('✅ Termin erfolgreich gebucht!');
+                
+                // Send confirmation
+                setTimeout(() => {
+                    showModal('Buchungsbestätigung', `
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 48px; margin-bottom: 20px;">🎉</div>
+                            <h3 style="color: var(--turquoise); margin-bottom: 20px;">Termin bestätigt!</h3>
+                            <p style="margin-bottom: 10px;"><strong>${slot.date} um ${slot.time}</strong></p>
+                            <p style="margin-bottom: 10px;">Artist: ${slot.artist}</p>
+                            <p style="margin-bottom: 20px;">Wir freuen uns auf dich!</p>
+                            <div style="background: var(--gray-dark); padding: 15px; border-radius: 12px;">
+                                <small style="color: var(--gray-light);">Du erhältst gleich eine Bestätigung per SMS/Email</small>
+                            </div>
+                        </div>
+                    `);
+                }, 500);
+            }, 1500);
+        }
+        
+        // Screen Navigation
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const navIndex = {
+                'homeScreen': 0,
+                'artistsScreen': 1,
+                'galleryScreen': 2,
+                'profileScreen': 3
+            };
+            
+            document.querySelectorAll('.nav-item')[navIndex[screenId]].classList.add('active');
+            currentScreen = screenId;
+        }
+        
+        // Show Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Show Modal
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+        }
+        
+        // Close Modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+        
+        // Loading
+        function showLoading() {
+            document.getElementById('loading').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('active');
+        }
+        
+        // Push Notifications
+        function enablePushNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showToast('🔔 Benachrichtigungen aktiviert!');
+                        localStorage.setItem('pushEnabled', 'true');
+                        
+                        // Test notification
+                        new Notification('Coco Colours Tattoo', {
+                            body: 'Du wirst über neue spontane Termine informiert!',
+                            icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+                            badge: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+                        });
+                    }
+                });
+            }
+        }
+        
+        function checkNotificationPermission() {
+            if (localStorage.getItem('pushEnabled') === 'true') {
+                document.getElementById('notificationDot').classList.add('active');
+            }
+        }
+        
+        // Toggle Notifications
+        function toggleNotifications() {
+            showModal('Benachrichtigungen', `
+                <div style="padding: 20px;">
+                    <div style="background: var(--gray-dark); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>⚡ Neuer Slot: 16:00 Uhr</span>
+                            <small style="color: var(--gray-light);">vor 5 Min</small>
+                        </div>
+                    </div>
+                    <div style="background: var(--gray-dark); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>🎉 Flash Day Samstag!</span>
+                            <small style="color: var(--gray-light);">vor 2 Std</small>
+                        </div>
+                    </div>
+                    <div style="background: var(--gray-dark); padding: 15px; border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>💰 Last Minute: -30%</span>
+                            <small style="color: var(--gray-light);">vor 1 Tag</small>
+                        </div>
+                    </div>
+                </div>
+            `);
+            
+            // Remove notification dot
+            document.getElementById('notificationDot').classList.remove('active');
+        }
+        
+        // Show Artist
+        function showArtist(name) {
+            const artists = {
+                'Nina': { emoji: '👩‍🎨', style: 'Watercolor • Floral', bio: 'Spezialisiert auf bunte Aquarell-Tattoos' },
+                'Max': { emoji: '🧑‍🎨', style: 'Geometric • Minimal', bio: 'Klare Linien, präzise Geometrie' },
+                'Sophie': { emoji: '💫', style: 'Fineline • Ornamental', bio: 'Filigrane Details sind meine Leidenschaft' },
+                'Tom': { emoji: '🎯', style: 'Traditional • Color', bio: 'Old School mit modernem Twist' }
+            };
+            
+            const artist = artists[name];
+            showModal(name, `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 60px; margin-bottom: 20px;">${artist.emoji}</div>
+                    <p style="color: var(--turquoise); margin-bottom: 15px;">${artist.style}</p>
+                    <p style="margin-bottom: 20px;">${artist.bio}</p>
+                    <button class="book-btn" onclick="closeModal(); showToast('Keine spontanen Termine verfügbar')">
+                        Auf Warteliste
+                    </button>
+                </div>
+            `);
+        }
+        
+        // Show My Bookings
+        function showMyBookings() {
+            const bookings = JSON.parse(localStorage.getItem('myBookings') || '[]');
+            
+            const content = bookings.length > 0 ? 
+                bookings.map(b => `
+                    <div style="background: var(--gray-dark); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>${b.date} • ${b.time}</strong>
+                            <span style="color: var(--turquoise);">Bestätigt</span>
+                        </div>
+                        <div style="color: var(--gray-light);">Artist: ${b.artist}</div>
+                    </div>
+                `).join('') :
+                '<p style="text-align: center; color: var(--gray-light);">Noch keine Termine gebucht</p>';
+            
+            showModal('Meine Termine', `<div style="padding: 20px;">${content}</div>`);
+        }
+        
+        // Show Notification Settings
+        function showNotificationSettings() {
+            const pushEnabled = localStorage.getItem('pushEnabled') === 'true';
+            
+            showModal('Benachrichtigungen', `
+                <div style="padding: 20px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Push-Benachrichtigungen</span>
+                            <input type="checkbox" ${pushEnabled ? 'checked' : ''} onchange="togglePush(this)">
+                        </label>
+                    </div>
+                    <div style="background: var(--gray-dark); padding: 15px; border-radius: 12px;">
+                        <p style="font-size: 14px; color: var(--gray-light);">
+                            Erhalte sofort Benachrichtigungen über neue spontane Termine und Last-Minute Angebote.
+                        </p>
+                    </div>
+                </div>
+            `);
+        }
+        
+        function togglePush(checkbox) {
+            if (checkbox.checked) {
+                enablePushNotifications();
+            } else {
+                localStorage.setItem('pushEnabled', 'false');
+                showToast('Benachrichtigungen deaktiviert');
+            }
+        }
+        
+        // Show Aftercare
+        function showAftercare() {
+            showModal('Pflegehinweise', `
+                <div style="padding: 20px;">
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li>Folie nach 2-4 Stunden entfernen</li>
+                        <li>Mit lauwarmen Wasser reinigen</li>
+                        <li>Dünn Bepanthen auftragen (3x täglich)</li>
+                        <li>Nicht kratzen!</li>
+                        <li>2 Wochen keine Sonne/Solarium</li>
+                        <li>Kein Schwimmbad für 2 Wochen</li>
+                    </ol>
+                </div>
+            `);
+        }
+        
+        // Show Contact
+        function showContact() {
+            showModal('Kontakt & Anfahrt', `
+                <div style="padding: 20px;">
+                    <h4 style="color: var(--turquoise); margin-bottom: 15px;">Coco Colours Tattoo</h4>
+                    <p style="margin-bottom: 10px;">📍 Musterstraße 123</p>
+                    <p style="margin-bottom: 10px;">07743 Jena</p>
+                    <p style="margin-bottom: 10px;">📞 03641 / 123456</p>
+                    <p style="margin-bottom: 20px;">📧 info@cococolours.de</p>
+                    
+                    <h4 style="color: var(--turquoise); margin-bottom: 10px;">Öffnungszeiten</h4>
+                    <p style="margin-bottom: 5px;">Mo-Fr: 11:00 - 19:00</p>
+                    <p style="margin-bottom: 5px;">Sa: 10:00 - 18:00</p>
+                    <p>So: Geschlossen</p>
+                </div>
+            `);
+        }
+        
+        // Auto-refresh slots
+        function startSlotRefresh() {
+            // Refresh every 30 seconds
+            setInterval(() => {
+                // Simulate new slot appearing
+                if (Math.random() > 0.8 && spontaneousSlots.length < 3) {
+                    const newSlot = {
+                        id: Date.now(),
+                        time: '19:00',
+                        date: 'Morgen',
+                        artist: 'Sophie',
+                        avatar: '💫',
+                        style: 'Fineline • Ornamental',
+                        duration: '1 Stunde',
+                        size: 'Klein',
+                        price: '80€',
+                        urgent: false,
+                        countdown: 7200
+                    };
+                    
+                    spontaneousSlots.push(newSlot);
+                    localStorage.setItem('spontaneousSlots', JSON.stringify(spontaneousSlots));
+                    displaySlots();
+                    
+                    // Send push notification
+                    if (localStorage.getItem('pushEnabled') === 'true' && 'Notification' in window) {
+                        new Notification('Neuer spontaner Termin!', {
+                            body: `${newSlot.artist} hat einen Slot um ${newSlot.time} frei!`,
+                            icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+                        });
+                    }
+                    
+                    document.getElementById('notificationDot').classList.add('active');
+                }
+            }, 30000);
+        }
+        
+        // Filter chips
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                showToast(`Filter: ${this.textContent}`);
+            });
+        });
+    </script>
+</body>
+</html>
