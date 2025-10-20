@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coco Colours Tattoo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #40E0D0;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #999;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: block;
+            padding: 18px;
+            background: transparent;
+            border: 2px solid #40E0D0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #40E0D0;
+            transition: left 0.3s;
+            z-index: -1;
+        }
+        
+        .btn:hover:before {
+            left: 0;
+        }
+        
+        .btn:hover {
+            color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(64, 224, 208, 0.3);
+        }
+        
+        .btn-icon {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        .fix-link {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .fix-link a {
+            color: #40E0D0;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .fix-link a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎨</div>
+        <h1>Coco Colours Tattoo</h1>
+        <p class="subtitle">Spontane Termine & Events</p>
+        
+        <div class="buttons">
+            <a href="coco-colours-app.html" class="btn">
+                <span class="btn-icon">📱</span>
+                Kunden App
+            </a>
+            
+            <a href="coco-colours-admin.html" class="btn">
+                <span class="btn-icon">⚙️</span>
+                Admin Panel
+            </a>
+        </div>
+        
+        <div class="fix-link">
+            <a href="debug.html">🛠️ Debug Tool (bei Problemen)</a>
+        </div>
+        
+        <div class="footer">
+            Version 1.0 | Alle Daten werden lokal gespeichert
+        </div>
+    </div>
+</body>
+</html>
