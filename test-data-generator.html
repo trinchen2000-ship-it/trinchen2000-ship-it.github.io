@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COCO Test-Daten Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #7dd3c0;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #888;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #7dd3c0;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: #7dd3c0;
+            margin-bottom: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: #7dd3c0;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5eead4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(125, 211, 192, 0.4);
+        }
+        
+        .btn.danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        
+        .btn.danger:hover {
+            background: #dc2626;
+        }
+        
+        .status {
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #7dd3c0;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .status-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .status-label {
+            color: #7dd3c0;
+        }
+        
+        .status-value {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #10b981;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 COCO Test-Daten Generator</h1>
+        <p class="subtitle">Generiere Test-Daten für deine COCO Tattoo App</p>
+        
+        <div class="card">
+            <h2>📅 Slots generieren</h2>
+            <div class="button-group">
+                <button class="btn" onclick="generateSlots(1)">1 Slot heute</button>
+                <button class="btn" onclick="generateSlots(5)">5 Slots diese Woche</button>
+                <button class="btn" onclick="generateSlots(10)">10 Random Slots</button>
+            </div>
+            <div id="slotSuccess" class="success">✅ Slots generiert!</div>
+        </div>
+        
+        <div class="card">
+            <h2>👨‍🎨 Artists generieren</h2>
+            <div class="button-group">
+                <button class="btn" onclick="generateArtists()">3 Standard Artists</button>
+                <button class="btn" onclick="generateCustomArtist()">Custom Artist</button>
+            </div>
+            <div id="artistSuccess" class="success">✅ Artists generiert!</div>
+        </div>
+        
+        <div class="card">
+            <h2>🎉 Events generieren</h2>
+            <div class="button-group">
+                <button class="btn" onclick="generateEvents(1)">Flash Day Event</button>
+                <button class="btn" onclick="generateEvents(3)">3 Random Events</button>
+            </div>
+            <div id="eventSuccess" class="success">✅ Events generiert!</div>
+        </div>
+        
+        <div class="card">
+            <h2>📝 Test-Anfragen generieren</h2>
+            <div class="button-group">
+                <button class="btn" onclick="generateRequests(1)">1 neue Anfrage</button>
+                <button class="btn" onclick="generateRequests(5)">5 verschiedene Anfragen</button>
+            </div>
+            <div id="requestSuccess" class="success">✅ Anfragen generiert!</div>
+        </div>
+        
+        <div class="card">
+            <h2>🗑️ Daten löschen</h2>
+            <div class="button-group">
+                <button class="btn danger" onclick="clearSlots()">Alle Slots löschen</button>
+                <button class="btn danger" onclick="clearRequests()">Alle Anfragen löschen</button>
+                <button class="btn danger" onclick="clearAll()">ALLES löschen</button>
+            </div>
+            <div id="clearSuccess" class="success">✅ Daten gelöscht!</div>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Aktueller Status</h2>
+            <div class="status">
+                <div class="status-item">
+                    <span class="status-label">Slots:</span>
+                    <span class="status-value" id="slotCount">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Artists:</span>
+                    <span class="status-value" id="artistCount">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Events:</span>
+                    <span class="status-value" id="eventCount">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Anfragen:</span>
+                    <span class="status-value" id="requestCount">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Push-Nachrichten:</span>
+                    <span class="status-value" id="pushCount">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Update status on load
+        updateStatus();
+        
+        function updateStatus() {
+            document.getElementById('slotCount').textContent = 
+                JSON.parse(localStorage.getItem('cocoSlots') || '[]').length;
+            document.getElementById('artistCount').textContent = 
+                JSON.parse(localStorage.getItem('cocoArtists') || '[]').length;
+            document.getElementById('eventCount').textContent = 
+                JSON.parse(localStorage.getItem('cocoEvents') || '[]').length;
+            document.getElementById('requestCount').textContent = 
+                JSON.parse(localStorage.getItem('cocoRequests') || '[]').length;
+            document.getElementById('pushCount').textContent = 
+                JSON.parse(localStorage.getItem('cocoPushHistory') || '[]').length;
+        }
+        
+        function showSuccess(id) {
+            const elem = document.getElementById(id);
+            elem.classList.add('show');
+            setTimeout(() => elem.classList.remove('show'), 3000);
+            updateStatus();
+        }
+        
+        function generateSlots(count) {
+            const artists = ['Max', 'Lisa', 'Tom', 'Sarah', 'Mike'];
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            
+            for (let i = 0; i < count; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + Math.floor(Math.random() * 7));
+                
+                const startHour = 10 + Math.floor(Math.random() * 8);
+                const duration = 1 + Math.floor(Math.random() * 4);
+                
+                slots.push({
+                    id: Date.now() + i + '',
+                    artist: artists[Math.floor(Math.random() * artists.length)],
+                    date: date.toISOString().split('T')[0],
+                    startTime: `${startHour}:00`,
+                    endTime: `${startHour + duration}:00`,
+                    duration: `${duration} Stunde${duration > 1 ? 'n' : ''}`,
+                    createdAt: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('cocoSlots', JSON.stringify(slots));
+            showSuccess('slotSuccess');
+        }
+        
+        function generateArtists() {
+            const artists = [
+                {
+                    id: '1',
+                    name: 'Max',
+                    description: 'Spezialist für Realismus und Portraits. 10+ Jahre Erfahrung.',
+                    styles: ['Realismus', 'Portraits', 'Black & Grey', 'Cover-ups'],
+                    image: '👨‍🎨'
+                },
+                {
+                    id: '2',
+                    name: 'Lisa',
+                    description: 'Expertin für Watercolor und Fineline. Gewinnerin mehrerer Awards.',
+                    styles: ['Watercolor', 'Fineline', 'Botanical', 'Minimalistisch'],
+                    image: '👩‍🎨'
+                },
+                {
+                    id: '3',
+                    name: 'Tom',
+                    description: 'Traditional und Neo-Traditional Artist. Japanische Motive.',
+                    styles: ['Traditional', 'Neo-Traditional', 'Japanese', 'Lettering'],
+                    image: '🧑‍🎨'
+                }
+            ];
+            
+            localStorage.setItem('cocoArtists', JSON.stringify(artists));
+            showSuccess('artistSuccess');
+        }
+        
+        function generateCustomArtist() {
+            const names = ['Alex', 'Chris', 'Jordan', 'Morgan', 'Casey'];
+            const styles = [
+                ['Geometric', 'Dotwork', 'Mandala'],
+                ['Trash Polka', 'Abstract', 'Experimental'],
+                ['Old School', 'Chicano', 'Religious'],
+                ['Biomechanical', 'Horror', 'Dark Art'],
+                ['Tribal', 'Polynesian', 'Celtic']
+            ];
+            
+            const artists = JSON.parse(localStorage.getItem('cocoArtists') || '[]');
+            const randomIndex = Math.floor(Math.random() * names.length);
+            
+            artists.push({
+                id: Date.now() + '',
+                name: names[randomIndex],
+                description: 'Kreativ, innovativ und immer auf der Suche nach neuen Herausforderungen.',
+                styles: styles[randomIndex],
+                image: '🎨'
+            });
+            
+            localStorage.setItem('cocoArtists', JSON.stringify(artists));
+            showSuccess('artistSuccess');
+        }
+        
+        function generateEvents(count) {
+            const events = JSON.parse(localStorage.getItem('cocoEvents') || '[]');
+            const eventTypes = [
+                {
+                    title: 'Flash Day - 30% Rabatt',
+                    description: 'Komm vorbei und sichere dir spontane Tattoos zu reduzierten Preisen! Nur solange der Vorrat reicht.'
+                },
+                {
+                    title: 'Guest Artist: Tokyo Ink',
+                    description: 'Internationaler Gast-Artist aus Japan. Spezialisiert auf traditionelle japanische Motive.'
+                },
+                {
+                    title: 'Charity Event',
+                    description: 'Alle Einnahmen gehen an den guten Zweck. Kleine Tattoos ab 50€.'
+                },
+                {
+                    title: 'Halloween Special',
+                    description: 'Gruselige Motive zum Sonderpreis! Horror, Dark Art und Gothic Designs.'
+                },
+                {
+                    title: 'Ladies Night',
+                    description: 'Exklusiv für Frauen - entspannte Atmosphäre und Sekt inklusive!'
+                }
+            ];
+            
+            for (let i = 0; i < count; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + Math.floor(Math.random() * 30));
+                const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+                
+                events.push({
+                    id: Date.now() + i + '',
+                    title: eventType.title,
+                    date: date.toISOString().split('T')[0],
+                    startTime: '10:00',
+                    endTime: '20:00',
+                    description: eventType.description,
+                    createdAt: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('cocoEvents', JSON.stringify(events));
+            showSuccess('eventSuccess');
+        }
+        
+        function generateRequests(count) {
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            const names = ['Max Mustermann', 'Anna Schmidt', 'Tom Weber', 'Lisa Müller', 'Chris Klein'];
+            const motifs = [
+                'Kleiner Schmetterling am Handgelenk',
+                'Großes Rücken-Tattoo mit Drachen-Motiv',
+                'Fineline Portrait meiner Katze',
+                'Geometrisches Mandala am Unterarm',
+                'Watercolor Blumen auf der Schulter'
+            ];
+            const sizes = ['XS (2-5 cm)', 'S (5-10 cm)', 'M (10-20 cm)', 'L (20-30 cm)', 'XL (30+ cm)'];
+            const statuses = ['pending', 'accepted', 'rejected'];
+            
+            for (let i = 0; i < count; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + Math.floor(Math.random() * 7));
+                
+                requests.push({
+                    id: Date.now() + i + '',
+                    slotId: Date.now() + '',
+                    artist: ['Max', 'Lisa', 'Tom'][Math.floor(Math.random() * 3)],
+                    date: date.toISOString().split('T')[0],
+                    time: '14:00 - 16:00',
+                    customerName: names[Math.floor(Math.random() * names.length)],
+                    customerEmail: `kunde${i}@email.de`,
+                    customerPhone: `0170${Math.floor(Math.random() * 10000000)}`,
+                    size: sizes[i % sizes.length],
+                    description: motifs[Math.floor(Math.random() * motifs.length)],
+                    notes: 'Erste Tätowierung, etwas nervös',
+                    status: i === 0 ? 'pending' : statuses[Math.floor(Math.random() * statuses.length)],
+                    createdAt: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('cocoRequests', JSON.stringify(requests));
+            showSuccess('requestSuccess');
+        }
+        
+        function clearSlots() {
+            if (confirm('Wirklich alle Slots löschen?')) {
+                localStorage.setItem('cocoSlots', '[]');
+                showSuccess('clearSuccess');
+            }
+        }
+        
+        function clearRequests() {
+            if (confirm('Wirklich alle Anfragen löschen?')) {
+                localStorage.setItem('cocoRequests', '[]');
+                showSuccess('clearSuccess');
+            }
+        }
+        
+        function clearAll() {
+            if (confirm('WIRKLICH ALLE DATEN LÖSCHEN? Dies kann nicht rückgängig gemacht werden!')) {
+                localStorage.setItem('cocoSlots', '[]');
+                localStorage.setItem('cocoArtists', '[]');
+                localStorage.setItem('cocoEvents', '[]');
+                localStorage.setItem('cocoRequests', '[]');
+                localStorage.setItem('cocoPushHistory', '[]');
+                showSuccess('clearSuccess');
+            }
+        }
+    </script>
+</body>
+</html>

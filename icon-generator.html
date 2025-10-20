@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COCO App Icon Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .icon-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .icon-box {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #7dd3c0;
+        }
+        
+        .icon-box h3 {
+            color: #7dd3c0;
+            margin-bottom: 15px;
+        }
+        
+        canvas {
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        canvas:hover {
+            transform: scale(1.05);
+        }
+        
+        .download-all {
+            background: #7dd3c0;
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .download-all:hover {
+            background: #5eead4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(125, 211, 192, 0.4);
+        }
+        
+        h1 {
+            color: #7dd3c0;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>COCO App Icons</h1>
+    <p class="subtitle">Klicke auf ein Icon zum Download oder lade alle herunter</p>
+    
+    <div class="icon-container" id="iconContainer"></div>
+    
+    <button class="download-all" onclick="downloadAll()">📦 Alle Icons herunterladen</button>
+    
+    <script>
+        const sizes = [
+            { size: 72, name: 'icon-72.png' },
+            { size: 96, name: 'icon-96.png' },
+            { size: 128, name: 'icon-128.png' },
+            { size: 144, name: 'icon-144.png' },
+            { size: 152, name: 'icon-152.png' },
+            { size: 192, name: 'icon-192.png' },
+            { size: 384, name: 'icon-384.png' },
+            { size: 512, name: 'icon-512.png' }
+        ];
+        
+        const container = document.getElementById('iconContainer');
+        
+        sizes.forEach(({ size, name }) => {
+            const box = document.createElement('div');
+            box.className = 'icon-box';
+            
+            const title = document.createElement('h3');
+            title.textContent = `${size}x${size}px`;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            canvas.title = `Download ${name}`;
+            canvas.onclick = () => downloadIcon(canvas, name);
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#7dd3c0');
+            gradient.addColorStop(1, '#5eead4');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Black circle background for logo
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size * 0.35, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw "C" for COCO
+            ctx.strokeStyle = '#7dd3c0';
+            ctx.lineWidth = size * 0.08;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size * 0.2, 0.3 * Math.PI, 1.7 * Math.PI);
+            ctx.stroke();
+            
+            // Add tattoo needle icon (simplified)
+            ctx.strokeStyle = '#7dd3c0';
+            ctx.lineWidth = size * 0.03;
+            ctx.beginPath();
+            // Needle line
+            ctx.moveTo(size * 0.65, size * 0.35);
+            ctx.lineTo(size * 0.75, size * 0.25);
+            // Needle tip
+            ctx.moveTo(size * 0.73, size * 0.27);
+            ctx.lineTo(size * 0.75, size * 0.25);
+            ctx.lineTo(size * 0.77, size * 0.27);
+            ctx.stroke();
+            
+            // Small dots for decoration
+            ctx.fillStyle = '#7dd3c0';
+            const dotSize = size * 0.02;
+            ctx.beginPath();
+            ctx.arc(size * 0.2, size * 0.8, dotSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.8, size * 0.2, dotSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.8, size * 0.8, dotSize, 0, Math.PI * 2);
+            ctx.fill();
+            
+            box.appendChild(title);
+            box.appendChild(canvas);
+            container.appendChild(box);
+        });
+        
+        function downloadIcon(canvas, filename) {
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+        
+        function downloadAll() {
+            const canvases = document.querySelectorAll('canvas');
+            let index = 0;
+            
+            const downloadNext = () => {
+                if (index < canvases.length) {
+                    const canvas = canvases[index];
+                    const filename = sizes[index].name;
+                    downloadIcon(canvas, filename);
+                    index++;
+                    setTimeout(downloadNext, 500);
+                }
+            };
+            
+            downloadNext();
+        }
+        
+        // Alternative: Generate Favicon
+        function generateFavicon() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#7dd3c0';
+            ctx.fillRect(0, 0, 32, 32);
+            
+            // Black circle
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(16, 16, 10, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // C letter
+            ctx.strokeStyle = '#7dd3c0';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(16, 16, 6, 0.3 * Math.PI, 1.7 * Math.PI);
+            ctx.stroke();
+            
+            // Download
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'favicon.ico';
+                a.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+        
+        // Add favicon button
+        const faviconBtn = document.createElement('button');
+        faviconBtn.className = 'download-all';
+        faviconBtn.style.marginTop = '20px';
+        faviconBtn.innerHTML = '🌐 Favicon generieren';
+        faviconBtn.onclick = generateFavicon;
+        document.body.appendChild(faviconBtn);
+    </script>
+</body>
+</html>

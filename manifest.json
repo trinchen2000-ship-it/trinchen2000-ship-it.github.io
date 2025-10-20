@@ -1,0 +1,56 @@
+{
+  "name": "COCO Tattoo Jena",
+  "short_name": "COCO Tattoo",
+  "description": "Deine Tattoo-Buchungs-App für spontane Termine",
+  "start_url": "./coco-app-customer.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#7dd3c0",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": [
+    "lifestyle",
+    "business"
+  ],
+  "lang": "de-DE",
+  "dir": "ltr",
+  "scope": "./",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Freie Slots",
+      "short_name": "Slots",
+      "description": "Verfügbare Termine anzeigen",
+      "url": "./coco-app-customer.html#slots",
+      "icons": [
+        {
+          "src": "icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Meine Anfragen",
+      "short_name": "Anfragen",
+      "description": "Status meiner Anfragen",
+      "url": "./coco-app-customer.html#requests",
+      "icons": [
+        {
+          "src": "icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COCO Tattoo App - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: rgba(125, 211, 192, 0.1);
+            border-radius: 20px;
+            border: 1px solid #7dd3c0;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #7dd3c0 0%, #5eead4 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 10px 30px rgba(125, 211, 192, 0.3);
+        }
+        
+        h1 {
+            font-size: 48px;
+            color: #7dd3c0;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #888;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7dd3c0 0%, #5eead4 100%);
+        }
+        
+        .card:hover {
+            border-color: #7dd3c0;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(125, 211, 192, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            color: #7dd3c0;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            color: #888;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .card-link {
+            display: inline-block;
+            background: #7dd3c0;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .card-link:hover {
+            background: #5eead4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(125, 211, 192, 0.4);
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: #7dd3c0;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .features {
+            background: rgba(125, 211, 192, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            border: 1px solid #7dd3c0;
+        }
+        
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .feature-name {
+            color: #7dd3c0;
+            font-weight: bold;
+        }
+        
+        .quick-start {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px;
+            border: 2px solid #7dd3c0;
+            margin-bottom: 50px;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: #7dd3c0;
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+        
+        .step-title {
+            color: #7dd3c0;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .step-description {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #333;
+            margin-top: 80px;
+            color: #888;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #7dd3c0;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🎨</div>
+                <div>
+                    <h1>COCO Tattoo App</h1>
+                    <p class="subtitle">Moderne Buchungslösung für Tattoo-Studios</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">📱 Hauptanwendungen</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">👥</div>
+                <h3 class="card-title">Kunden-App</h3>
+                <p class="card-description">
+                    Die mobile App für deine Kunden. Slot-Buchung, Artist-Übersicht, Events und Anfragen-Tracking.
+                </p>
+                <a href="coco-app-customer.html" class="card-link">Kunden-App öffnen →</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3 class="card-title">Admin-Panel</h3>
+                <p class="card-description">
+                    Vollständige Verwaltung aller Funktionen. Slots, Artists, Events und Anfragen managen.
+                </p>
+                <a href="coco-app-admin.html" class="card-link">Admin-Panel öffnen →</a>
+            </div>
+        </div>
+        
+        <h2 class="section-title">🛠️ Entwickler-Tools</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">🧪</div>
+                <h3 class="card-title">Test-Daten Generator</h3>
+                <p class="card-description">
+                    Generiere Beispieldaten zum Testen der Apps. Slots, Artists, Events und Anfragen auf Knopfdruck.
+                </p>
+                <a href="test-data-generator.html" class="card-link">Generator öffnen →</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <h3 class="card-title">Icon Generator</h3>
+                <p class="card-description">
+                    Erstelle alle benötigten App-Icons in verschiedenen Größen für PWA und Mobile Apps.
+                </p>
+                <a href="icon-generator.html" class="card-link">Icons erstellen →</a>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2 class="section-title">✨ Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">📅</div>
+                    <div class="feature-name">Slot-System</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👨‍🎨</div>
+                    <div class="feature-name">Artist-Profile</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎉</div>
+                    <div class="feature-name">Event-Management</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-name">Anfragen-System</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔔</div>
+                    <div class="feature-name">Push-Nachrichten</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📷</div>
+                    <div class="feature-name">Bild-Upload</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-name">PWA-Support</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-name">Offline-Fähig</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-start">
+            <h2 class="section-title">🚀 Quick Start</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Test-Daten laden</div>
+                    <div class="step-description">Öffne den Test-Generator und erstelle Beispieldaten</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Admin öffnen</div>
+                    <div class="step-description">Erkunde das Admin-Panel und seine Funktionen</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Kunden-App testen</div>
+                    <div class="step-description">Teste die Buchung aus Kundensicht</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Auf GitHub laden</div>
+                    <div class="step-description">Deploye die App mit GitHub Pages</div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">📚 Dokumentation</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">📖</div>
+                <h3 class="card-title">README</h3>
+                <p class="card-description">
+                    Vollständige Dokumentation mit Installation und Konfiguration.
+                </p>
+                <a href="README.md" class="card-link" download>README.md downloaden →</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h3 class="card-title">GitHub Guide</h3>
+                <p class="card-description">
+                    Schritt-für-Schritt Anleitung für GitHub Pages Deployment.
+                </p>
+                <a href="GITHUB-DEPLOYMENT.md" class="card-link" download>Guide downloaden →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>COCO Tattoo App © 2024</p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                Made with 🖤 and 💙 (Schwarz & Pastelltürkis)
+            </p>
+            <p style="margin-top: 20px;">
+                <span class="badge">Version 1.0</span>
+                <span class="badge">PWA Ready</span>
+                <span class="badge">Offline Support</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
