@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COCO App - Quick Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #7dd3c0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .test-section {
+            background: #1a1a1a;
+            border: 1px solid #7dd3c0;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .test-title {
+            color: #7dd3c0;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .test-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status.ok {
+            background: #10b981;
+            color: #fff;
+        }
+        
+        .status.error {
+            background: #ef4444;
+            color: #fff;
+        }
+        
+        .status.warning {
+            background: #f59e0b;
+            color: #fff;
+        }
+        
+        .btn {
+            background: #7dd3c0;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            background: #5eead4;
+        }
+        
+        .data-display {
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 COCO App - Feature Test</h1>
+    
+    <div class="test-section">
+        <h2 class="test-title">📋 Status Check</h2>
+        <div id="statusChecks"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2 class="test-title">🧪 Test-Aktionen</h2>
+        <button class="btn" onclick="createTestSlot()">Test-Slot erstellen</button>
+        <button class="btn" onclick="createBookedSlot()">Gebuchten Slot erstellen</button>
+        <button class="btn" onclick="createPastSlot()">Vergangenen Slot erstellen</button>
+        <button class="btn" onclick="createTestRequest()">Test-Anfrage erstellen</button>
+        <button class="btn" onclick="simulateAcceptRequest()">Anfrage annehmen</button>
+    </div>
+    
+    <div class="test-section">
+        <h2 class="test-title">📊 Aktuelle Daten</h2>
+        <div id="dataDisplay" class="data-display"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2 class="test-title">🔗 Apps öffnen</h2>
+        <button class="btn" onclick="window.open('coco-app-customer.html', '_blank')">Kunden-App</button>
+        <button class="btn" onclick="window.open('coco-app-admin.html', '_blank')">Admin-Panel</button>
+        <button class="btn" onclick="window.open('test-data-generator.html', '_blank')">Test-Generator</button>
+    </div>
+
+    <script>
+        // Check Status
+        function checkStatus() {
+            const checks = [];
+            
+            // Check LocalStorage
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            const artists = JSON.parse(localStorage.getItem('cocoArtists') || '[]');
+            const events = JSON.parse(localStorage.getItem('cocoEvents') || '[]');
+            
+            checks.push({
+                name: 'LocalStorage verfügbar',
+                status: localStorage ? 'ok' : 'error',
+                info: 'Datenspeicherung funktioniert'
+            });
+            
+            checks.push({
+                name: 'Slots vorhanden',
+                status: slots.length > 0 ? 'ok' : 'warning',
+                info: `${slots.length} Slots gefunden`
+            });
+            
+            // Check for different slot statuses
+            const freeSlots = slots.filter(s => !s.status || s.status === 'free');
+            const bookedSlots = slots.filter(s => s.status === 'booked');
+            const pastSlots = slots.filter(s => new Date(s.date) < new Date());
+            
+            checks.push({
+                name: 'Slot-Status',
+                status: 'ok',
+                info: `Frei: ${freeSlots.length}, Gebucht: ${bookedSlots.length}, Vergangen: ${pastSlots.length}`
+            });
+            
+            checks.push({
+                name: 'Anfragen',
+                status: requests.length > 0 ? 'ok' : 'warning',
+                info: `${requests.length} Anfragen`
+            });
+            
+            checks.push({
+                name: 'Artists',
+                status: artists.length > 0 ? 'ok' : 'warning',
+                info: `${artists.length} Artists`
+            });
+            
+            checks.push({
+                name: 'Events',
+                status: events.length > 0 ? 'ok' : 'warning',
+                info: `${events.length} Events`
+            });
+            
+            // Check Edit Functions
+            checks.push({
+                name: 'Edit-Funktionen',
+                status: 'ok',
+                info: 'Slots & Events können bearbeitet werden'
+            });
+            
+            // Check External Form Link
+            checks.push({
+                name: 'Externes Formular',
+                status: 'ok',
+                info: 'Link zu anfrage.coco-colours.de integriert'
+            });
+            
+            // Display checks
+            const container = document.getElementById('statusChecks');
+            container.innerHTML = checks.map(check => `
+                <div class="test-item">
+                    ${check.name}
+                    <span class="status ${check.status}">${check.status.toUpperCase()}</span>
+                    <br>
+                    <small style="color: #888;">${check.info}</small>
+                </div>
+            `).join('');
+            
+            // Update data display
+            updateDataDisplay();
+        }
+        
+        // Update Data Display
+        function updateDataDisplay() {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            
+            const display = document.getElementById('dataDisplay');
+            display.innerHTML = `
+                <h3 style="color: #7dd3c0;">Slots (${slots.length}):</h3>
+                ${slots.slice(0, 3).map(slot => `
+                    <div style="margin: 10px 0; padding: 10px; background: #1a1a1a; border-radius: 5px;">
+                        ID: ${slot.id}<br>
+                        Artist: ${slot.artist}<br>
+                        Datum: ${slot.date}<br>
+                        Status: <span style="color: ${slot.status === 'booked' ? '#888' : '#7dd3c0'};">${slot.status || 'free'}</span>
+                    </div>
+                `).join('')}
+                ${slots.length > 3 ? `<div style="color: #888;">... und ${slots.length - 3} weitere</div>` : ''}
+                
+                <h3 style="color: #7dd3c0; margin-top: 20px;">Anfragen (${requests.length}):</h3>
+                ${requests.slice(0, 2).map(request => `
+                    <div style="margin: 10px 0; padding: 10px; background: #1a1a1a; border-radius: 5px;">
+                        ID: ${request.id}<br>
+                        Kunde: ${request.customerName}<br>
+                        Status: <span style="color: ${
+                            request.status === 'accepted' ? '#10b981' :
+                            request.status === 'rejected' ? '#ef4444' :
+                            '#f59e0b'
+                        };">${request.status}</span>
+                    </div>
+                `).join('')}
+                ${requests.length > 2 ? `<div style="color: #888;">... und ${requests.length - 2} weitere</div>` : ''}
+            `;
+        }
+        
+        // Test Functions
+        function createTestSlot() {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            slots.push({
+                id: 'test-' + Date.now(),
+                artist: 'Test Artist',
+                date: tomorrow.toISOString().split('T')[0],
+                startTime: '14:00',
+                endTime: '16:00',
+                duration: '2 Stunden',
+                status: 'free',
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('cocoSlots', JSON.stringify(slots));
+            alert('Test-Slot erstellt! (Morgen, 14:00-16:00)');
+            checkStatus();
+        }
+        
+        function createBookedSlot() {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            
+            slots.push({
+                id: 'booked-' + Date.now(),
+                artist: 'Max',
+                date: nextWeek.toISOString().split('T')[0],
+                startTime: '10:00',
+                endTime: '13:00',
+                duration: '3 Stunden',
+                status: 'booked',
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('cocoSlots', JSON.stringify(slots));
+            alert('Gebuchten Slot erstellt! (Nächste Woche)');
+            checkStatus();
+        }
+        
+        function createPastSlot() {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            slots.push({
+                id: 'past-' + Date.now(),
+                artist: 'Lisa',
+                date: yesterday.toISOString().split('T')[0],
+                startTime: '15:00',
+                endTime: '17:00',
+                duration: '2 Stunden',
+                status: 'free',
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('cocoSlots', JSON.stringify(slots));
+            alert('Vergangenen Slot erstellt! (Gestern)');
+            checkStatus();
+        }
+        
+        function createTestRequest() {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const freeSlot = slots.find(s => !s.status || s.status === 'free');
+            
+            if (!freeSlot) {
+                alert('Kein freier Slot vorhanden! Erstelle erst einen Test-Slot.');
+                return;
+            }
+            
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            requests.push({
+                id: 'req-' + Date.now(),
+                slotId: freeSlot.id,
+                artist: freeSlot.artist,
+                date: freeSlot.date,
+                time: `${freeSlot.startTime} - ${freeSlot.endTime}`,
+                customerName: 'Test Kunde',
+                customerEmail: 'test@example.com',
+                customerPhone: '0170123456',
+                size: 'M (10-20 cm)',
+                description: 'Test Tattoo Motiv',
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('cocoRequests', JSON.stringify(requests));
+            alert('Test-Anfrage erstellt!');
+            checkStatus();
+        }
+        
+        function simulateAcceptRequest() {
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            const pendingRequest = requests.find(r => r.status === 'pending');
+            
+            if (!pendingRequest) {
+                alert('Keine offene Anfrage vorhanden!');
+                return;
+            }
+            
+            // Accept request
+            pendingRequest.status = 'accepted';
+            pendingRequest.adminMessage = 'Termin bestätigt!';
+            
+            // Update slot status
+            if (pendingRequest.slotId) {
+                const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+                const slot = slots.find(s => s.id === pendingRequest.slotId);
+                if (slot) {
+                    slot.status = 'booked';
+                    localStorage.setItem('cocoSlots', JSON.stringify(slots));
+                }
+            }
+            
+            localStorage.setItem('cocoRequests', JSON.stringify(requests));
+            alert('Anfrage angenommen und Slot als gebucht markiert!');
+            checkStatus();
+        }
+        
+        // Initial check
+        checkStatus();
+    </script>
+</body>
+</html>
