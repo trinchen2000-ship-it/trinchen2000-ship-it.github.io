@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7dd3c0">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>COCO Tattoo - Kunden App</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --black: #000000;
+            --dark-gray: #1a1a1a;
+            --turquoise: #7dd3c0;
+            --turquoise-light: #a5f3e7;
+            --turquoise-dark: #5eead4;
+            --white: #ffffff;
+            --gray: #888888;
+            --light-gray: #f0f0f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .app {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--black);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--turquoise) 0%, var(--turquoise-dark) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(125, 211, 192, 0.3);
+        }
+        
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo-text p {
+            font-size: 11px;
+            color: var(--turquoise);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--dark-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid var(--turquoise);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: var(--white);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background: var(--dark-gray);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-item {
+            padding: 10px 20px;
+            background: var(--black);
+            border: 1px solid var(--turquoise);
+            border-radius: 25px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .nav-item.active {
+            background: var(--turquoise);
+            color: var(--black);
+            box-shadow: 0 4px 15px rgba(125, 211, 192, 0.3);
+        }
+        
+        /* Content Sections */
+        .content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Slot Cards */
+        .slot-card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .slot-card:hover {
+            border-color: var(--turquoise);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(125, 211, 192, 0.2);
+        }
+        
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .slot-artist {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--turquoise);
+        }
+        
+        .slot-badge {
+            background: var(--turquoise);
+            color: var(--black);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .slot-time {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .slot-date {
+            font-size: 14px;
+        }
+        
+        .slot-duration {
+            background: var(--black);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        .slot-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: var(--turquoise);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background: var(--turquoise-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(125, 211, 192, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--turquoise);
+            border: 1px solid var(--turquoise);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--turquoise);
+            color: var(--black);
+        }
+        
+        /* Artist Cards */
+        .artist-card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .artist-card:hover {
+            border-color: var(--turquoise);
+            box-shadow: 0 10px 30px rgba(125, 211, 192, 0.2);
+        }
+        
+        .artist-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--turquoise) 0%, var(--turquoise-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        
+        .artist-info {
+            padding: 20px;
+        }
+        
+        .artist-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--turquoise);
+        }
+        
+        .artist-styles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .style-tag {
+            background: var(--black);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: var(--turquoise);
+            border: 1px solid var(--turquoise);
+        }
+        
+        /* Event Cards */
+        .event-card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--turquoise);
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .event-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--turquoise);
+        }
+        
+        .event-date {
+            background: var(--turquoise);
+            color: var(--black);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .event-description {
+            color: var(--gray);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .event-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Request Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--dark-gray);
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--turquoise);
+        }
+        
+        .modal-close {
+            width: 35px;
+            height: 35px;
+            background: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--turquoise);
+            font-weight: 500;
+        }
+        
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--black);
+            border: 1px solid var(--turquoise);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(125, 211, 192, 0.2);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: var(--black);
+            border: 2px dashed var(--turquoise);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            background: rgba(125, 211, 192, 0.05);
+        }
+        
+        .file-upload input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: var(--turquoise);
+        }
+        
+        .file-upload-text {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .file-preview {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--black);
+            border-radius: 10px;
+        }
+        
+        .file-preview.active {
+            display: block;
+        }
+        
+        .file-preview img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--turquoise);
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .empty-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: var(--success);
+            color: var(--white);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .success-message.active {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--turquoise);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark-gray);
+            border-top: 1px solid var(--turquoise);
+            padding: 10px 0;
+            z-index: 100;
+        }
+        
+        .bottom-nav-content {
+            max-width: 430px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray);
+        }
+        
+        .bottom-nav-item.active {
+            color: var(--turquoise);
+        }
+        
+        .bottom-nav-icon {
+            font-size: 24px;
+        }
+        
+        .bottom-nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Slot Info Box */
+        .slot-info {
+            background: rgba(125, 211, 192, 0.1);
+            border: 1px solid var(--turquoise);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .slot-info-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--turquoise);
+            margin-bottom: 10px;
+        }
+        
+        .slot-info-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .slot-info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        
+        .slot-info-label {
+            color: var(--gray);
+        }
+        
+        .slot-info-value {
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 350px;
+            height: 100vh;
+            background: var(--dark-gray);
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            transition: right 0.3s ease;
+            z-index: 300;
+            overflow-y: auto;
+        }
+        
+        .notification-panel.active {
+            right: 0;
+        }
+        
+        .notification-panel-header {
+            padding: 20px;
+            background: var(--black);
+            border-bottom: 1px solid var(--turquoise);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notification-panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--turquoise);
+        }
+        
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(125, 211, 192, 0.1);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .notification-item:hover {
+            background: rgba(125, 211, 192, 0.05);
+        }
+        
+        .notification-item.unread {
+            background: rgba(125, 211, 192, 0.1);
+        }
+        
+        .notification-time {
+            font-size: 11px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--turquoise);
+        }
+        
+        .notification-text {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🎨</div>
+                    <div class="logo-text">
+                        <h1>COCO</h1>
+                        <p>Tattoo Jena</p>
+                    </div>
+                </div>
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    🔔
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="nav">
+            <div class="nav-item active" onclick="showSection('slots')">Freie Slots</div>
+            <div class="nav-item" onclick="showSection('artists')">Artists</div>
+            <div class="nav-item" onclick="showSection('events')">Events</div>
+            <div class="nav-item" onclick="showSection('requests')">Meine Anfragen</div>
+            <div class="nav-item" onclick="window.open('https://anfrage.coco-colours.de/', '_blank')" style="background: var(--turquoise); color: var(--black);">
+                📝 Terminanfrage
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Slots Section -->
+            <div class="section active" id="slots-section">
+                <div id="slotsContainer">
+                    <!-- Slots werden hier dynamisch geladen -->
+                </div>
+                <div class="empty-state" id="slotsEmpty" style="display: none;">
+                    <div class="empty-icon">📅</div>
+                    <div class="empty-title">Keine freien Slots</div>
+                    <div class="empty-text">Aktuell sind keine spontanen Termine verfügbar. Schaue später nochmal vorbei!</div>
+                    <button class="btn btn-primary" style="margin-top: 20px;" onclick="window.open('https://anfrage.coco-colours.de/', '_blank')">
+                        📝 Terminanfrage über Formular
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Artists Section -->
+            <div class="section" id="artists-section">
+                <div id="artistsContainer">
+                    <!-- Artists werden hier dynamisch geladen -->
+                </div>
+            </div>
+            
+            <!-- Events Section -->
+            <div class="section" id="events-section">
+                <div id="eventsContainer">
+                    <!-- Events werden hier dynamisch geladen -->
+                </div>
+                <div class="empty-state" id="eventsEmpty" style="display: none;">
+                    <div class="empty-icon">🎉</div>
+                    <div class="empty-title">Keine Events</div>
+                    <div class="empty-text">Aktuell sind keine Events geplant.</div>
+                </div>
+            </div>
+            
+            <!-- Requests Section -->
+            <div class="section" id="requests-section">
+                <div id="requestsContainer">
+                    <!-- Anfragen werden hier dynamisch geladen -->
+                </div>
+                <div class="empty-state" id="requestsEmpty" style="display: none;">
+                    <div class="empty-icon">📝</div>
+                    <div class="empty-title">Keine Anfragen</div>
+                    <div class="empty-text">Du hast noch keine Anfragen gesendet.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="bottom-nav-content">
+                <div class="bottom-nav-item active" onclick="showSection('slots')">
+                    <span class="bottom-nav-icon">📅</span>
+                    <span class="bottom-nav-label">Slots</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showSection('artists')">
+                    <span class="bottom-nav-icon">👨‍🎨</span>
+                    <span class="bottom-nav-label">Artists</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showSection('events')">
+                    <span class="bottom-nav-icon">🎉</span>
+                    <span class="bottom-nav-label">Events</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showSection('requests')">
+                    <span class="bottom-nav-icon">📝</span>
+                    <span class="bottom-nav-label">Anfragen</span>
+                </div>
+                <div class="bottom-nav-item" onclick="window.open('https://anfrage.coco-colours.de/', '_blank')" style="color: var(--turquoise);">
+                    <span class="bottom-nav-icon">🌐</span>
+                    <span class="bottom-nav-label">Formular</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Request Modal -->
+        <div class="modal" id="requestModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Termin anfragen</h2>
+                    <div class="modal-close" onclick="closeModal()">✕</div>
+                </div>
+                
+                <div class="slot-info" id="slotInfo">
+                    <!-- Wird dynamisch gefüllt -->
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    Anfrage erfolgreich gesendet! ✓
+                </div>
+                
+                <form id="requestForm">
+                    <div class="form-group">
+                        <label class="form-label">Name *</label>
+                        <input type="text" class="form-input" id="customerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">E-Mail *</label>
+                        <input type="email" class="form-input" id="customerEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Telefon</label>
+                        <input type="tel" class="form-input" id="customerPhone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tattoo-Größe *</label>
+                        <select class="form-select" id="tattooSize" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="xs">XS (2-5 cm)</option>
+                            <option value="s">S (5-10 cm)</option>
+                            <option value="m">M (10-20 cm)</option>
+                            <option value="l">L (20-30 cm)</option>
+                            <option value="xl">XL (30+ cm)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Motiv-Beschreibung *</label>
+                        <textarea class="form-textarea" id="tattooDescription" required placeholder="Beschreibe dein Wunschmotiv..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Referenzbild hochladen</label>
+                        <div class="file-upload">
+                            <input type="file" id="imageUpload" accept="image/*">
+                            <div class="file-upload-icon">📷</div>
+                            <div class="file-upload-text">Klicke hier oder ziehe ein Bild hierher</div>
+                        </div>
+                        <div class="file-preview" id="filePreview">
+                            <img id="previewImage" alt="Vorschau">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Anmerkungen</label>
+                        <textarea class="form-textarea" id="customerNotes" placeholder="Weitere Informationen..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Anfrage senden
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Notification Panel -->
+        <div class="notification-panel" id="notificationPanel">
+            <div class="notification-panel-header">
+                <div class="notification-panel-title">Benachrichtigungen</div>
+                <div class="modal-close" onclick="toggleNotifications()">✕</div>
+            </div>
+            <div id="notificationsList">
+                <!-- Benachrichtigungen werden hier dynamisch geladen -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // App State
+        let currentSection = 'slots';
+        let selectedSlot = null;
+        let notifications = [];
+        
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllData();
+            setupEventListeners();
+            checkNotifications();
+            
+            // Auto-refresh alle 30 Sekunden
+            setInterval(loadAllData, 30000);
+            
+            // Check for notifications alle 10 Sekunden
+            setInterval(checkNotifications, 10000);
+        });
+        
+        // Load all data
+        function loadAllData() {
+            loadSlots();
+            loadArtists();
+            loadEvents();
+            loadRequests();
+        }
+        
+        // Load Slots
+        function loadSlots() {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const container = document.getElementById('slotsContainer');
+            const emptyState = document.getElementById('slotsEmpty');
+            
+            if (slots.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            // Sortiere Slots nach Datum
+            slots.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            container.innerHTML = slots.map(slot => {
+                const slotDate = new Date(slot.date);
+                const isPast = slotDate < today;
+                const isBooked = slot.status === 'booked';
+                
+                return `
+                <div class="slot-card" style="opacity: ${isPast ? '0.5' : '1'}; ${isBooked ? 'border-color: var(--gray);' : ''}">
+                    <div class="slot-header">
+                        <div class="slot-artist">${slot.artist}</div>
+                        <div class="slot-badge" style="background: ${isBooked ? 'var(--gray)' : isPast ? 'var(--danger)' : 'var(--turquoise)'};">
+                            ${isBooked ? 'GEBUCHT' : isPast ? 'VERGANGEN' : 'FREI'}
+                        </div>
+                    </div>
+                    <div class="slot-time">
+                        <span class="slot-date">📅 ${formatDate(slot.date)} • ${slot.startTime} - ${slot.endTime}</span>
+                    </div>
+                    <div class="slot-duration">⏱️ ${slot.duration}</div>
+                    <div class="slot-actions">
+                        ${!isPast && !isBooked ? `
+                            <button class="btn btn-primary" onclick="openRequestModal('${slot.id}')">Jetzt anfragen</button>
+                        ` : ''}
+                        ${isPast ? '<span style="color: var(--gray); font-size: 14px;">Dieser Termin ist bereits vorbei</span>' : ''}
+                        ${isBooked && !isPast ? '<span style="color: var(--gray); font-size: 14px;">Bereits vergeben</span>' : ''}
+                    </div>
+                </div>
+            `}).join('');
+        }
+        
+        // Load Artists
+        function loadArtists() {
+            const artists = JSON.parse(localStorage.getItem('cocoArtists') || '[]');
+            const container = document.getElementById('artistsContainer');
+            
+            // Default Artists wenn keine vorhanden
+            if (artists.length === 0) {
+                const defaultArtists = [
+                    {
+                        id: '1',
+                        name: 'Max',
+                        description: 'Spezialist für Realismus und Portraits',
+                        styles: ['Realismus', 'Portraits', 'Black & Grey'],
+                        image: '👨‍🎨'
+                    },
+                    {
+                        id: '2',
+                        name: 'Lisa',
+                        description: 'Expertin für Watercolor und Fineline',
+                        styles: ['Watercolor', 'Fineline', 'Botanical'],
+                        image: '👩‍🎨'
+                    },
+                    {
+                        id: '3',
+                        name: 'Tom',
+                        description: 'Traditional und Neo-Traditional Artist',
+                        styles: ['Traditional', 'Neo-Traditional', 'Japanese'],
+                        image: '🧑‍🎨'
+                    }
+                ];
+                localStorage.setItem('cocoArtists', JSON.stringify(defaultArtists));
+                artists.push(...defaultArtists);
+            }
+            
+            container.innerHTML = artists.map(artist => `
+                <div class="artist-card">
+                    <div class="artist-image">${artist.image || '👨‍🎨'}</div>
+                    <div class="artist-info">
+                        <div class="artist-name">${artist.name}</div>
+                        <div style="color: var(--gray); font-size: 14px; line-height: 1.5;">
+                            ${artist.description}
+                        </div>
+                        <div class="artist-styles">
+                            ${artist.styles.map(style => `
+                                <span class="style-tag">${style}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('') + `
+            <div style="margin-top: 30px; text-align: center; padding: 20px; background: var(--dark-gray); border-radius: 15px; border: 1px solid var(--turquoise);">
+                <h3 style="color: var(--turquoise); margin-bottom: 15px;">Wunschtermin nicht dabei?</h3>
+                <p style="color: var(--gray); margin-bottom: 20px;">Nutze unser Online-Formular für eine unverbindliche Terminanfrage</p>
+                <button class="btn btn-primary" onclick="window.open('https://anfrage.coco-colours.de/', '_blank')">
+                    📝 Zum Anfrage-Formular
+                </button>
+            </div>`;
+        }
+        
+        // Load Events
+        function loadEvents() {
+            const events = JSON.parse(localStorage.getItem('cocoEvents') || '[]');
+            const container = document.getElementById('eventsContainer');
+            const emptyState = document.getElementById('eventsEmpty');
+            
+            if (events.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            // Sortiere Events nach Datum
+            events.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Trenne vergangene und zukünftige Events
+            const futureEvents = events.filter(e => new Date(e.date) >= today);
+            const pastEvents = events.filter(e => new Date(e.date) < today);
+            
+            let html = '';
+            
+            if (futureEvents.length > 0) {
+                html += '<h3 style="color: var(--turquoise); margin-bottom: 15px;">Kommende Events</h3>';
+                html += futureEvents.map(event => `
+                    <div class="event-card">
+                        <div class="event-header">
+                            <div class="event-title">${event.title}</div>
+                            <div class="event-date">${formatDate(event.date)}</div>
+                        </div>
+                        <div class="event-description">${event.description}</div>
+                        <div class="event-time">
+                            🕐 ${event.startTime} - ${event.endTime}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            if (pastEvents.length > 0) {
+                html += '<h3 style="color: var(--gray); margin-top: 30px; margin-bottom: 15px;">Vergangene Events</h3>';
+                html += pastEvents.map(event => `
+                    <div class="event-card" style="opacity: 0.5; border-left-color: var(--gray);">
+                        <div class="event-header">
+                            <div class="event-title">${event.title}</div>
+                            <div class="event-date" style="background: var(--gray);">${formatDate(event.date)}</div>
+                        </div>
+                        <div class="event-description">${event.description}</div>
+                        <div class="event-time">
+                            🕐 ${event.startTime} - ${event.endTime}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // Load Requests
+        function loadRequests() {
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            const container = document.getElementById('requestsContainer');
+            const emptyState = document.getElementById('requestsEmpty');
+            
+            if (requests.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            container.innerHTML = requests.map(request => {
+                const statusColor = request.status === 'accepted' ? 'var(--success)' : 
+                                   request.status === 'rejected' ? 'var(--danger)' : 
+                                   'var(--warning)';
+                const statusText = request.status === 'accepted' ? 'Bestätigt' : 
+                                  request.status === 'rejected' ? 'Abgelehnt' : 
+                                  'In Bearbeitung';
+                
+                return `
+                    <div class="slot-card">
+                        <div class="slot-header">
+                            <div class="slot-artist">${request.artist}</div>
+                            <div class="slot-badge" style="background: ${statusColor}; color: var(--white);">
+                                ${statusText}
+                            </div>
+                        </div>
+                        <div class="slot-time">
+                            <span class="slot-date">📅 ${formatDate(request.date)} • ${request.time}</span>
+                        </div>
+                        <div style="margin-top: 10px; color: var(--gray); font-size: 14px;">
+                            <div>Motiv: ${request.description}</div>
+                            <div>Größe: ${request.size}</div>
+                        </div>
+                        ${request.adminMessage ? `
+                            <div style="margin-top: 15px; padding: 10px; background: var(--black); border-radius: 8px; border-left: 3px solid ${statusColor};">
+                                <div style="font-size: 12px; color: var(--turquoise); margin-bottom: 5px;">Nachricht vom Studio:</div>
+                                <div style="font-size: 14px; color: var(--white);">${request.adminMessage}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Open Request Modal
+        function openRequestModal(slotId) {
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            selectedSlot = slots.find(s => s.id === slotId);
+            
+            if (!selectedSlot) return;
+            
+            // Fill slot info
+            document.getElementById('slotInfo').innerHTML = `
+                <div class="slot-info-title">Slot-Details</div>
+                <div class="slot-info-details">
+                    <div class="slot-info-row">
+                        <span class="slot-info-label">Artist:</span>
+                        <span class="slot-info-value">${selectedSlot.artist}</span>
+                    </div>
+                    <div class="slot-info-row">
+                        <span class="slot-info-label">Datum:</span>
+                        <span class="slot-info-value">${formatDate(selectedSlot.date)}</span>
+                    </div>
+                    <div class="slot-info-row">
+                        <span class="slot-info-label">Zeitfenster:</span>
+                        <span class="slot-info-value">${selectedSlot.startTime} - ${selectedSlot.endTime}</span>
+                    </div>
+                    <div class="slot-info-row">
+                        <span class="slot-info-label">Dauer:</span>
+                        <span class="slot-info-value">${selectedSlot.duration}</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: 8px;">
+                    <div style="font-size: 13px; color: var(--white); line-height: 1.5;">
+                        ⚠️ Falls der Slot für dein Wunschmotiv zu groß oder zu klein ist, geben wir dir Bescheid und bieten dir alternative Termine an.
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('requestModal').classList.add('active');
+        }
+        
+        // Close Modal
+        function closeModal() {
+            document.getElementById('requestModal').classList.remove('active');
+            document.getElementById('requestForm').reset();
+            document.getElementById('filePreview').classList.remove('active');
+            document.getElementById('successMessage').classList.remove('active');
+        }
+        
+        // Show Section
+        function showSection(section) {
+            currentSection = section;
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update bottom navigation
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.bottom-nav-item:nth-child(${
+                section === 'slots' ? 1 : 
+                section === 'artists' ? 2 :
+                section === 'events' ? 3 : 4
+            })`).classList.add('active');
+            
+            // Show section
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('active');
+            });
+            document.getElementById(`${section}-section`).classList.add('active');
+        }
+        
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // File Upload
+            document.getElementById('imageUpload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        document.getElementById('previewImage').src = e.target.result;
+                        document.getElementById('filePreview').classList.add('active');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Form Submit
+            document.getElementById('requestForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                submitRequest();
+            });
+        }
+        
+        // Submit Request
+        function submitRequest() {
+            const request = {
+                id: Date.now().toString(),
+                slotId: selectedSlot.id,
+                artist: selectedSlot.artist,
+                date: selectedSlot.date,
+                time: `${selectedSlot.startTime} - ${selectedSlot.endTime}`,
+                customerName: document.getElementById('customerName').value,
+                customerEmail: document.getElementById('customerEmail').value,
+                customerPhone: document.getElementById('customerPhone').value,
+                size: document.getElementById('tattooSize').options[document.getElementById('tattooSize').selectedIndex].text,
+                description: document.getElementById('tattooDescription').value,
+                notes: document.getElementById('customerNotes').value,
+                image: document.getElementById('previewImage').src || null,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save request
+            const requests = JSON.parse(localStorage.getItem('cocoRequests') || '[]');
+            requests.unshift(request);
+            localStorage.setItem('cocoRequests', JSON.stringify(requests));
+            
+            // Show success message
+            document.getElementById('successMessage').classList.add('active');
+            
+            // Reset form after delay
+            setTimeout(() => {
+                closeModal();
+                loadRequests();
+                showSection('requests');
+            }, 2000);
+        }
+        
+        // Check Notifications
+        function checkNotifications() {
+            // Simuliere neue Benachrichtigungen
+            const lastCheck = localStorage.getItem('lastNotificationCheck') || new Date().toISOString();
+            const slots = JSON.parse(localStorage.getItem('cocoSlots') || '[]');
+            const newSlots = slots.filter(slot => new Date(slot.createdAt) > new Date(lastCheck));
+            
+            if (newSlots.length > 0) {
+                newSlots.forEach(slot => {
+                    addNotification({
+                        id: Date.now().toString(),
+                        title: 'Neuer Slot verfügbar!',
+                        text: `${slot.artist} hat einen neuen Termin am ${formatDate(slot.date)} freigeschaltet!`,
+                        time: new Date().toISOString(),
+                        unread: true
+                    });
+                });
+            }
+            
+            localStorage.setItem('lastNotificationCheck', new Date().toISOString());
+            updateNotificationBadge();
+        }
+        
+        // Add Notification
+        function addNotification(notification) {
+            notifications.unshift(notification);
+            if (notifications.length > 20) notifications.pop();
+            
+            // Show browser notification if supported
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(notification.title, {
+                    body: notification.text,
+                    icon: '/icon-192x192.png',
+                    badge: '/icon-72x72.png'
+                });
+            }
+            
+            renderNotifications();
+            updateNotificationBadge();
+        }
+        
+        // Render Notifications
+        function renderNotifications() {
+            const container = document.getElementById('notificationsList');
+            
+            if (notifications.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 40px; text-align: center; color: var(--gray);">
+                        <div style="font-size: 40px; margin-bottom: 10px;">🔔</div>
+                        <div>Keine Benachrichtigungen</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notifications.map(notif => `
+                <div class="notification-item ${notif.unread ? 'unread' : ''}" onclick="markAsRead('${notif.id}')">
+                    <div class="notification-time">${formatTime(notif.time)}</div>
+                    <div class="notification-title">${notif.title}</div>
+                    <div class="notification-text">${notif.text}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Toggle Notifications
+        function toggleNotifications() {
+            const panel = document.getElementById('notificationPanel');
+            panel.classList.toggle('active');
+            
+            if (panel.classList.contains('active')) {
+                renderNotifications();
+            }
+        }
+        
+        // Mark as Read
+        function markAsRead(notificationId) {
+            const notification = notifications.find(n => n.id === notificationId);
+            if (notification) {
+                notification.unread = false;
+                renderNotifications();
+                updateNotificationBadge();
+            }
+        }
+        
+        // Update Notification Badge
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            const unreadCount = notifications.filter(n => n.unread).length;
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        
+        // Format Date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return date.toLocaleDateString('de-DE', options);
+        }
+        
+        // Format Time
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Gerade eben';
+            if (minutes < 60) return `Vor ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+            if (hours < 24) return `Vor ${hours} Stunde${hours !== 1 ? 'n' : ''}`;
+            if (days < 7) return `Vor ${days} Tag${days !== 1 ? 'en' : ''}`;
+            
+            return date.toLocaleDateString('de-DE');
+        }
+        
+        // Request Notification Permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+        
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered:', registration);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New version available
+                                    if (confirm('Neue Version verfügbar! App aktualisieren?')) {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // Install prompt for PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.createElement('button');
+            installBtn.className = 'btn btn-primary';
+            installBtn.style.cssText = 'position: fixed; bottom: 100px; right: 20px; z-index: 1000;';
+            installBtn.innerHTML = '📱 App installieren';
+            installBtn.onclick = async () => {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.remove();
+                }
+                deferredPrompt = null;
+            };
+            document.body.appendChild(installBtn);
+        });
+    </script>
+</body>
+</html>
